@@ -51,11 +51,30 @@
                     <navigationItem key="navigationItem" id="zcm-GD-0eB"/>
                     <connections>
                         <outlet property="mapView" destination="jts-0O-Fla" id="gvh-Pj-gcM"/>
+                        <segue destination="aAe-Fl-4Cx" kind="show" identifier="showPhotoAlbumView" id="RfY-FO-vXx"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="140.57971014492756" y="65.625"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="G8V-RI-0qQ">
+            <objects>
+                <viewController id="aAe-Fl-4Cx" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="M79-we-zkh">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="gat-Kj-jSz"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="nD8-L2-Hy2">
+                        <barButtonItem key="backBarButtonItem" title="OK" id="g3M-Qb-NDG"/>
+                    </navigationItem>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="0Cp-d3-3rb" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="993" y="66"/>
         </scene>
     </scenes>
     <resources>

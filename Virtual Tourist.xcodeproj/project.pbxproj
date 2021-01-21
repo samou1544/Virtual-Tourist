@@ -14,6 +14,9 @@
 		723AD60025B78C590021F8DC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 723AD5FF25B78C590021F8DC /* Assets.xcassets */; };
 		723AD60325B78C590021F8DC /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 723AD60125B78C590021F8DC /* LaunchScreen.storyboard */; };
 		723AD60D25B7A2920021F8DC /* PhotoAlbumViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 723AD60C25B7A2920021F8DC /* PhotoAlbumViewController.swift */; };
+		723AD61125B8DCCA0021F8DC /* FlickrClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 723AD61025B8DCCA0021F8DC /* FlickrClient.swift */; };
+		723AD61525B8E2AA0021F8DC /* FlickrResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 723AD61425B8E2AA0021F8DC /* FlickrResponse.swift */; };
+		723AD61925B8F77E0021F8DC /* PhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 723AD61825B8F77E0021F8DC /* PhotoCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +29,9 @@
 		723AD60225B78C590021F8DC /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		723AD60425B78C590021F8DC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		723AD60C25B7A2920021F8DC /* PhotoAlbumViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoAlbumViewController.swift; sourceTree = "<group>"; };
+		723AD61025B8DCCA0021F8DC /* FlickrClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlickrClient.swift; sourceTree = "<group>"; };
+		723AD61425B8E2AA0021F8DC /* FlickrResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlickrResponse.swift; sourceTree = "<group>"; };
+		723AD61825B8F77E0021F8DC /* PhotoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,16 +64,35 @@
 		723AD5F525B78C2F0021F8DC /* Virtual Tourist */ = {
 			isa = PBXGroup;
 			children = (
+				723AD61725B8F7560021F8DC /* Controller */,
+				723AD60F25B8DC9F0021F8DC /* Model */,
 				723AD5F625B78C300021F8DC /* AppDelegate.swift */,
 				723AD5F825B78C300021F8DC /* SceneDelegate.swift */,
-				723AD5FA25B78C300021F8DC /* TravelLocationMapView.swift */,
 				723AD5FC25B78C300021F8DC /* Main.storyboard */,
 				723AD5FF25B78C590021F8DC /* Assets.xcassets */,
 				723AD60125B78C590021F8DC /* LaunchScreen.storyboard */,
 				723AD60425B78C590021F8DC /* Info.plist */,
-				723AD60C25B7A2920021F8DC /* PhotoAlbumViewController.swift */,
 			);
 			path = "Virtual Tourist";
+			sourceTree = "<group>";
+		};
+		723AD60F25B8DC9F0021F8DC /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				723AD61025B8DCCA0021F8DC /* FlickrClient.swift */,
+				723AD61425B8E2AA0021F8DC /* FlickrResponse.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		723AD61725B8F7560021F8DC /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				723AD60C25B7A2920021F8DC /* PhotoAlbumViewController.swift */,
+				723AD5FA25B78C300021F8DC /* TravelLocationMapView.swift */,
+				723AD61825B8F77E0021F8DC /* PhotoCell.swift */,
+			);
+			path = Controller;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -140,10 +165,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				723AD61925B8F77E0021F8DC /* PhotoCell.swift in Sources */,
 				723AD5FB25B78C300021F8DC /* TravelLocationMapView.swift in Sources */,
+				723AD61125B8DCCA0021F8DC /* FlickrClient.swift in Sources */,
 				723AD5F725B78C300021F8DC /* AppDelegate.swift in Sources */,
 				723AD5F925B78C300021F8DC /* SceneDelegate.swift in Sources */,
 				723AD60D25B7A2920021F8DC /* PhotoAlbumViewController.swift in Sources */,
+				723AD61525B8E2AA0021F8DC /* FlickrResponse.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

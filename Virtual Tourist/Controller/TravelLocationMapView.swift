@@ -19,14 +19,13 @@ class TravelLocationMapView: UIViewController, MKMapViewDelegate {
     var selectedPin:Pin?
     var pins:[Pin]=[]
     
-    let dataController=DataController(modelName: "VirtualTourist")
     
     ///getting stored pins
     fileprivate func fetchPins() {
         let fetchRequest:NSFetchRequest<Pin> = Pin.fetchRequest()
         let sortDescriptor = NSSortDescriptor(key: "latitude", ascending: false)
         fetchRequest.sortDescriptors = [sortDescriptor]
-        if let result=try? dataController.viewContext.fetch(fetchRequest){
+        if let result=try? DataController.shared.viewContext.fetch(fetchRequest){
             pins=result
             showPins()
         }
@@ -49,7 +48,6 @@ class TravelLocationMapView: UIViewController, MKMapViewDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         mapView.removeAnnotations(mapView.annotations)
-        dataController.load()
         fetchPins()
         // Generate long-press UIGestureRecognizer.
         let longPress: UILongPressGestureRecognizer = UILongPressGestureRecognizer()
@@ -78,15 +76,13 @@ class TravelLocationMapView: UIViewController, MKMapViewDelegate {
     }
     
     // A method called when long press is detected.
-    @objc private func recognizeLongPress(_ sender: UILongPressGestureRecognizer) {
-        // Do not generate pins many times during long press.
+    @objc private func recognizeLongPress(_ sender: UILongPressGestureRecognizer){
+        
         if sender.state != UIGestureRecognizer.State.began {
             return
         }
         
-        // Get the coordinates
-        let location = sender.location(in: mapView)
-        
+        let location=sender.location(in: mapView)
         // Convert location to CLLocationCoordinate2D.
         let myCoordinate: CLLocationCoordinate2D = mapView.convert(location, toCoordinateFrom: mapView)
         
@@ -99,10 +95,10 @@ class TravelLocationMapView: UIViewController, MKMapViewDelegate {
         // Added pins to MapView.
         mapView.addAnnotation(myPin)
         // Saving the dropped pin
-        selectedPin = Pin(context: dataController.viewContext)
+        selectedPin = Pin(context: DataController.shared.viewContext)
         selectedPin!.latitude=myPin.coordinate.latitude
         selectedPin!.longitude=myPin.coordinate.longitude
-        try? dataController.viewContext.save()
+        try? DataController.shared.viewContext.save()
         
     }
     
@@ -132,7 +128,6 @@ class TravelLocationMapView: UIViewController, MKMapViewDelegate {
         if segue.identifier == segueIdentifier {
             let photoAlbumVC = segue.destination as! PhotoAlbumViewController
             photoAlbumVC.currentPin=selectedPin
-            photoAlbumVC.dataController=dataController
         }
     }
     
@@ -152,7 +147,7 @@ class TravelLocationMapView: UIViewController, MKMapViewDelegate {
         let fetchRequest: NSFetchRequest<Pin> = Pin.fetchRequest()
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "latitude", ascending: true)]
         fetchRequest.predicate = NSPredicate(format: "latitude == %@ AND longitude == %@", NSNumber.init(value: location.latitude),NSNumber.init(value: location.longitude))
-        if let result = try? dataController.viewContext.fetch(fetchRequest)
+        if let result = try? DataController.shared.viewContext.fetch(fetchRequest)
         
         {
             return result.first!

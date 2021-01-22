@@ -8,10 +8,14 @@
 import Foundation
 
 struct FlickrResponse:Decodable {
+    
     let photos:FlickrPhotos
 }
 struct FlickrPhotos:Decodable {
+    let pages:Int
+    let perpage:Int
     let photo:[FlickrPhoto]
+    
     
 }
 struct FlickrPhoto:Decodable {

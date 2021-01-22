@@ -12,9 +12,9 @@ import CoreData
 
 class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate,UICollectionViewDelegateFlowLayout, MKMapViewDelegate{
     
-    var dataController:DataController!
     var currentPin:Pin!
     var fetchedResultsController: NSFetchedResultsController<Photo>!
+    var flickrParameterValues:FlickrParameterValues?
     
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var collectionView: UICollectionView!
@@ -27,6 +27,9 @@ class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource, UI
         //get stored photos
         getPhotosForCurrentPin()
         
+        if let flickrValues=currentPin.flickrParameterValues{
+            self.flickrParameterValues=flickrValues
+        }
         
         if let photos = currentPin.photos, photos.count > 0 {
             label.isHidden=true
@@ -35,7 +38,7 @@ class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource, UI
             //if there are no photos stored, fetch from Flickr
             
             isFetching(isFetching: true)
-            FlickrClient.getPhotos(lat: currentPin.latitude, long: currentPin.longitude, completion: handleFlickrResponse(response: error:))
+            FlickrClient.getPhotos(lat: currentPin.latitude, long: currentPin.longitude,page:1, completion: handleFlickrResponse(response: error:))
         }
         
         
@@ -59,7 +62,7 @@ class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource, UI
         let fetchRequest:NSFetchRequest<Photo> = Photo.fetchRequest()
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "pin", ascending: false)]
         fetchRequest.predicate = NSPredicate(format: "pin == %@", currentPin)
-        fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: dataController.viewContext, sectionNameKeyPath: nil, cacheName: "\(String(describing: currentPin))-photos")
+        fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: DataController.shared.viewContext, sectionNameKeyPath: nil, cacheName: "\(String(describing: currentPin))-photos")
         fetchedResultsController.delegate = self
         do {
             try fetchedResultsController.performFetch()
@@ -93,6 +96,10 @@ class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource, UI
             print(error?.localizedDescription ?? "error")
             return
         }
+        flickrParameterValues=FlickrParameterValues(context:DataController.shared.viewContext)
+        flickrParameterValues!.totalPages=Int16(response.photos.pages)
+        flickrParameterValues!.photosPerPage=Int16(response.photos.perpage)
+        try? DataController.shared.viewContext.save()
         downloadPhotos(list:response.photos.photo)
         
     }
@@ -105,31 +112,38 @@ class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource, UI
             guard let url=URL(string: item.url_n) else {
                 return
             }
-            let photo=Photo(context:self.dataController.viewContext)
+            let photo=Photo(context:DataController.shared.viewContext)
             photo.pin=self.currentPin
-            try? self.dataController.viewContext.save()
+            try? DataController.shared.viewContext.save()
             FlickrClient.getPhotoFromURL(url: url){data,error in
                 DispatchQueue.main.async {
                     photo.photo=data
-                    try? self.dataController.viewContext.save()
+                    try? DataController.shared.viewContext.save()
                 }
             }
         }
     }
     
     @IBAction func newCollectionTap(_ sender: Any) {
+        var page: Int {
+            if let totalPages = flickrParameterValues?.totalPages {
+                let page = min(totalPages, 4000/flickrParameterValues!.photosPerPage)
+                return Int(arc4random_uniform(UInt32(page)) + 1)
+            }
+            return 1
+        }
         
         if let photos = fetchedResultsController.fetchedObjects
         {
             for photo in photos
             {
-                self.dataController.viewContext.delete(photo)
-                try? self.dataController.viewContext.save()
+                DataController.shared.viewContext.delete(photo)
+                try? DataController.shared.viewContext.save()
             }
             
         }
         isFetching(isFetching: true)
-        FlickrClient.getPhotos(lat: currentPin.latitude, long: currentPin.longitude, completion: handleFlickrResponse(response: error:))
+        FlickrClient.getPhotos(lat: currentPin.latitude, long: currentPin.longitude,page: page, completion: handleFlickrResponse(response: error:))
         
     }
     
@@ -149,7 +163,7 @@ class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource, UI
         let photo = fetchedResultsController.object(at: indexPath)
         
         if let img = photo.photo{
-        
+            
             cell.imageView.image=UIImage(data:img)
         }else{
             //set placeholder image
@@ -161,8 +175,8 @@ class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource, UI
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath:IndexPath) {
         
-        dataController.viewContext.delete(self.fetchedResultsController.object(at: indexPath))
-        try? self.dataController.viewContext.save()
+        DataController.shared.viewContext.delete(self.fetchedResultsController.object(at: indexPath))
+        try? DataController.shared.viewContext.save()
         
     }
     

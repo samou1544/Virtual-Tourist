@@ -31,4 +31,6 @@ class DataController {
         }
     }
     
+    static let shared = DataController(modelName: "VirtualTourist")
+    
 }

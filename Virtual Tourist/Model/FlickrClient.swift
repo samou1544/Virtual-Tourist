@@ -12,8 +12,8 @@ class FlickrClient {
     static let apiSecret="abc32ba9d808b6b5"
     static let baseURL="https://www.flickr.com/services/rest/?method=flickr.photos.search&"
     
-    class func getPhotos(lat:Double, long:Double, completion: @escaping (FlickrResponse?, Error?) -> Void) {
-        var composedUrlString=baseURL+"api_key="+apiKey+"&format=json&nojsoncallback=1&extras=url_n&safe_search=1&page=1&per_page=30"
+    class func getPhotos(lat:Double, long:Double, page:Int, completion: @escaping (FlickrResponse?, Error?) -> Void) {
+        var composedUrlString=baseURL+"api_key="+apiKey+"&format=json&nojsoncallback=1&extras=url_n&safe_search=1&page=\(page)&per_page=30"
         composedUrlString+="&lat="+String(lat)+"&lon="+String(long)
         let url=URL(string: composedUrlString)!
         let task = URLSession.shared.dataTask(with: url) { data, response, error in

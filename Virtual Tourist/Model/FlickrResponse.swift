@@ -8,13 +8,13 @@
 import Foundation
 
 struct FlickrResponse:Decodable {
-    let photos:FlickrPhoto
+    let photos:FlickrPhotos
 }
-struct FlickrPhoto:Decodable {
-    let photo:[Photo]
+struct FlickrPhotos:Decodable {
+    let photo:[FlickrPhoto]
     
 }
-struct Photo:Decodable {
+struct FlickrPhoto:Decodable {
     let url_n:String
     
 }

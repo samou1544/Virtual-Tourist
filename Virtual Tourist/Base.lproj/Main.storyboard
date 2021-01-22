@@ -67,12 +67,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="wxa-8J-qIt">
-                                <rect key="frame" x="0.0" y="88" width="414" height="180"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="180" id="pMx-h9-wV1"/>
-                                </constraints>
-                            </mapView>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="dZA-Q0-mGt">
                                 <rect key="frame" x="0.0" y="268" width="414" height="554"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -111,6 +105,21 @@
                                     <outlet property="delegate" destination="aAe-Fl-4Cx" id="3zk-gX-e2e"/>
                                 </connections>
                             </collectionView>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="wxa-8J-qIt">
+                                <rect key="frame" x="0.0" y="88" width="414" height="180"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="180" id="pMx-h9-wV1"/>
+                                </constraints>
+                            </mapView>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="Fua-qz-KyC">
+                                <rect key="frame" x="138.5" y="535" width="20" height="20"/>
+                            </activityIndicatorView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="No Images" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2Hz-W2-aWL">
+                                <rect key="frame" x="166.5" y="534.5" width="81.5" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FDR-o1-pCv">
                                 <rect key="frame" x="0.0" y="822" width="414" height="40"/>
                                 <constraints>
@@ -128,11 +137,15 @@
                             <constraint firstItem="gat-Kj-jSz" firstAttribute="trailing" secondItem="wxa-8J-qIt" secondAttribute="trailing" id="4fy-yP-NeW"/>
                             <constraint firstItem="dZA-Q0-mGt" firstAttribute="leading" secondItem="gat-Kj-jSz" secondAttribute="leading" id="6IZ-HV-d0x"/>
                             <constraint firstItem="dZA-Q0-mGt" firstAttribute="top" secondItem="wxa-8J-qIt" secondAttribute="bottom" id="FRP-Xy-TNh"/>
+                            <constraint firstItem="2Hz-W2-aWL" firstAttribute="centerY" secondItem="dZA-Q0-mGt" secondAttribute="centerY" id="J49-GH-SE6"/>
                             <constraint firstItem="dZA-Q0-mGt" firstAttribute="bottom" secondItem="FDR-o1-pCv" secondAttribute="top" id="Ys1-x6-swg"/>
                             <constraint firstItem="wxa-8J-qIt" firstAttribute="top" secondItem="gat-Kj-jSz" secondAttribute="top" id="ax6-Js-ssW"/>
                             <constraint firstItem="gat-Kj-jSz" firstAttribute="trailing" secondItem="dZA-Q0-mGt" secondAttribute="trailing" id="drK-rJ-1x2"/>
                             <constraint firstItem="wxa-8J-qIt" firstAttribute="leading" secondItem="gat-Kj-jSz" secondAttribute="leading" id="eiq-yR-QoR"/>
+                            <constraint firstItem="Fua-qz-KyC" firstAttribute="centerY" secondItem="2Hz-W2-aWL" secondAttribute="centerY" id="hIA-cR-Fu3"/>
                             <constraint firstItem="gat-Kj-jSz" firstAttribute="trailing" secondItem="FDR-o1-pCv" secondAttribute="trailing" id="k39-KJ-c4p"/>
+                            <constraint firstItem="2Hz-W2-aWL" firstAttribute="centerX" secondItem="dZA-Q0-mGt" secondAttribute="centerX" id="mpk-QE-fF9"/>
+                            <constraint firstItem="Fua-qz-KyC" firstAttribute="trailing" secondItem="2Hz-W2-aWL" secondAttribute="leading" constant="-8" id="oxa-kc-s2j"/>
                             <constraint firstItem="gat-Kj-jSz" firstAttribute="bottom" secondItem="FDR-o1-pCv" secondAttribute="bottom" id="vae-gj-R8J"/>
                             <constraint firstItem="FDR-o1-pCv" firstAttribute="leading" secondItem="gat-Kj-jSz" secondAttribute="leading" id="y6O-RN-Q4c"/>
                         </constraints>
@@ -140,7 +153,10 @@
                     <navigationItem key="navigationItem" id="nD8-L2-Hy2"/>
                     <connections>
                         <outlet property="collectionView" destination="dZA-Q0-mGt" id="rbA-91-qfg"/>
+                        <outlet property="indicator" destination="Fua-qz-KyC" id="f58-KJ-bZs"/>
+                        <outlet property="label" destination="2Hz-W2-aWL" id="LgV-wv-nRJ"/>
                         <outlet property="mapView" destination="wxa-8J-qIt" id="lXg-5F-JWa"/>
+                        <outlet property="newCollectionButton" destination="FDR-o1-pCv" id="tYE-0p-e1h"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0Cp-d3-3rb" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

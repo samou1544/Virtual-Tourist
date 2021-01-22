@@ -17,6 +17,9 @@
 		723AD61125B8DCCA0021F8DC /* FlickrClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 723AD61025B8DCCA0021F8DC /* FlickrClient.swift */; };
 		723AD61525B8E2AA0021F8DC /* FlickrResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 723AD61425B8E2AA0021F8DC /* FlickrResponse.swift */; };
 		723AD61925B8F77E0021F8DC /* PhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 723AD61825B8F77E0021F8DC /* PhotoCell.swift */; };
+		723AD61D25B8FFD20021F8DC /* VirtualTourist.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 723AD61B25B8FFD10021F8DC /* VirtualTourist.xcdatamodeld */; };
+		723AD62225B906E50021F8DC /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 723AD62125B906E50021F8DC /* DataController.swift */; };
+		723AD62525BA3CED0021F8DC /* Extension PhotoAlbumVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 723AD62425BA3CEC0021F8DC /* Extension PhotoAlbumVC.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +35,9 @@
 		723AD61025B8DCCA0021F8DC /* FlickrClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlickrClient.swift; sourceTree = "<group>"; };
 		723AD61425B8E2AA0021F8DC /* FlickrResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlickrResponse.swift; sourceTree = "<group>"; };
 		723AD61825B8F77E0021F8DC /* PhotoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCell.swift; sourceTree = "<group>"; };
+		723AD61C25B8FFD10021F8DC /* VirtualTourist.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = VirtualTourist.xcdatamodel; sourceTree = "<group>"; };
+		723AD62125B906E50021F8DC /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
+		723AD62425BA3CEC0021F8DC /* Extension PhotoAlbumVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Extension PhotoAlbumVC.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,6 +87,8 @@
 			children = (
 				723AD61025B8DCCA0021F8DC /* FlickrClient.swift */,
 				723AD61425B8E2AA0021F8DC /* FlickrResponse.swift */,
+				723AD61B25B8FFD10021F8DC /* VirtualTourist.xcdatamodeld */,
+				723AD62125B906E50021F8DC /* DataController.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -91,6 +99,7 @@
 				723AD60C25B7A2920021F8DC /* PhotoAlbumViewController.swift */,
 				723AD5FA25B78C300021F8DC /* TravelLocationMapView.swift */,
 				723AD61825B8F77E0021F8DC /* PhotoCell.swift */,
+				723AD62425BA3CEC0021F8DC /* Extension PhotoAlbumVC.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -169,8 +178,11 @@
 				723AD5FB25B78C300021F8DC /* TravelLocationMapView.swift in Sources */,
 				723AD61125B8DCCA0021F8DC /* FlickrClient.swift in Sources */,
 				723AD5F725B78C300021F8DC /* AppDelegate.swift in Sources */,
+				723AD62225B906E50021F8DC /* DataController.swift in Sources */,
+				723AD61D25B8FFD20021F8DC /* VirtualTourist.xcdatamodeld in Sources */,
 				723AD5F925B78C300021F8DC /* SceneDelegate.swift in Sources */,
 				723AD60D25B7A2920021F8DC /* PhotoAlbumViewController.swift in Sources */,
+				723AD62525BA3CED0021F8DC /* Extension PhotoAlbumVC.swift in Sources */,
 				723AD61525B8E2AA0021F8DC /* FlickrResponse.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -371,6 +383,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		723AD61B25B8FFD10021F8DC /* VirtualTourist.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				723AD61C25B8FFD10021F8DC /* VirtualTourist.xcdatamodel */,
+			);
+			currentVersion = 723AD61C25B8FFD10021F8DC /* VirtualTourist.xcdatamodel */;
+			path = VirtualTourist.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 723AD5EB25B78C2E0021F8DC /* Project object */;
 }

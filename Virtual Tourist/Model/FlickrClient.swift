@@ -35,17 +35,6 @@ class FlickrClient {
                 DispatchQueue.main.async {
                     completion(nil, error)
                 }
-                /*do {
-                    print(String(data: data, encoding: .utf8)!)
-                    let errorResponse = try decoder.decode(UdacityResponse.self, from: data) as Error
-                    DispatchQueue.main.async {
-                        completion(nil, errorResponse)
-                    }
-                } catch {
-                    DispatchQueue.main.async {
-                        completion(nil, error)
-                    }
-                }*/
             }
         }
         task.resume()

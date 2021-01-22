@@ -24,21 +24,22 @@ class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource, UI
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //get photos from coreData
+        //get stored photos
         getPhotosForCurrentPin()
+        
         
         if let photos = currentPin.photos, photos.count > 0 {
             label.isHidden=true
         }
         else {
-            newCollectionButton.isEnabled=false
-            label.text="DownLoading"
-            indicator.startAnimating()
+            //if there are no photos stored, fetch from Flickr
+            
+            isFetching(isFetching: true)
             FlickrClient.getPhotos(lat: currentPin.latitude, long: currentPin.longitude, completion: handleFlickrResponse(response: error:))
         }
         
         
-        // Generate pins.
+        // Generate pin for the current pin
         let myPin: MKPointAnnotation = MKPointAnnotation()
         
         // Set the coordinates.
@@ -52,13 +53,13 @@ class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource, UI
         
         
     }
-    
+    ///load stored photos
     fileprivate func getPhotosForCurrentPin(){
         
         let fetchRequest:NSFetchRequest<Photo> = Photo.fetchRequest()
         fetchRequest.sortDescriptors = [NSSortDescriptor(key: "pin", ascending: false)]
         fetchRequest.predicate = NSPredicate(format: "pin == %@", currentPin)
-        fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: dataController.viewContext, sectionNameKeyPath: nil, cacheName: nil)
+        fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: dataController.viewContext, sectionNameKeyPath: nil, cacheName: "\(String(describing: currentPin))-photos")
         fetchedResultsController.delegate = self
         do {
             try fetchedResultsController.performFetch()
@@ -68,10 +69,24 @@ class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource, UI
         
         
     }
+    ///update UI when fetching
+    func isFetching(isFetching:Bool){
+        if(isFetching){
+            label.text="DownLoading"
+            
+            indicator.startAnimating()
+        }else{
+            indicator.stopAnimating()
+        }
+        newCollectionButton.isEnabled = !isFetching
+        label.isHidden = !isFetching
+        
+    }
+    
+    
+    
     func handleFlickrResponse(response: FlickrResponse?, error: Error?) {
-        newCollectionButton.isEnabled=true
-        indicator.stopAnimating()
-        label.isHidden=true
+        isFetching(isFetching: false)
         guard let response=response else {
             label.text="No Images"
             label.isHidden=false
@@ -101,13 +116,7 @@ class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource, UI
             }
         }
     }
-    func handleImageFileResponse(photo:Photo, data: Data?, error: Error?) {
-        DispatchQueue.main.async {
-            photo.photo=data
-            try? self.dataController.viewContext.save()
-            
-        }
-    }
+    
     @IBAction func newCollectionTap(_ sender: Any) {
         
         if let photos = fetchedResultsController.fetchedObjects
@@ -119,7 +128,7 @@ class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource, UI
             }
             
         }
-        
+        isFetching(isFetching: true)
         FlickrClient.getPhotos(lat: currentPin.latitude, long: currentPin.longitude, completion: handleFlickrResponse(response: error:))
         
     }
@@ -138,14 +147,13 @@ class PhotoAlbumViewController: UIViewController, UICollectionViewDataSource, UI
         
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "collectionCell", for: indexPath) as! PhotoCell
         let photo = fetchedResultsController.object(at: indexPath)
-        //cell.imageView.image=UIImage(data:photo.photo!)
         
         if let img = photo.photo{
         
-        // Set the name and image
             cell.imageView.image=UIImage(data:img)
         }else{
-            cell.imageView.image=UIImage(systemName:"pencil")
+            //set placeholder image
+            cell.imageView.image=UIImage(systemName:"photo")
         }
         
         return cell

@@ -9,63 +9,54 @@ import UIKit
 import MapKit
 import CoreData
 
-class TravelLocationMapView: UIViewController, MKMapViewDelegate, NSFetchedResultsControllerDelegate {
+class TravelLocationMapView: UIViewController, MKMapViewDelegate {
     
     @IBOutlet weak var mapView: MKMapView!
     
     let segueIdentifier="showPhotoAlbumView"
     let userDefaultsKey="lastRegion"
-    var selectedPin:Pin?
     
+    var selectedPin:Pin?
     var pins:[Pin]=[]
     
     let dataController=DataController(modelName: "VirtualTourist")
-    var fetchedResultsController:NSFetchedResultsController<Pin>!
     
-    fileprivate func setupFetchedResultsController() {
+    ///getting stored pins
+    fileprivate func fetchPins() {
         let fetchRequest:NSFetchRequest<Pin> = Pin.fetchRequest()
         let sortDescriptor = NSSortDescriptor(key: "latitude", ascending: false)
         fetchRequest.sortDescriptors = [sortDescriptor]
-        /*fetchedResultsController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: dataController.viewContext, sectionNameKeyPath: nil, cacheName: nil)
-        fetchedResultsController.delegate = self
-        do {
-            try fetchedResultsController.performFetch()
-        } catch {
-            fatalError(error.localizedDescription)
-        }
-        
-        */
         if let result=try? dataController.viewContext.fetch(fetchRequest){
             pins=result
             showPins()
         }
     }
+    
+    ///displaying pins on the map
     func showPins(){
         var annotations = [MKPointAnnotation]()
         for pin in pins {
-            
             let lat = CLLocationDegrees(pin.latitude)
             let long = CLLocationDegrees(pin.longitude)
             let coordinate = CLLocationCoordinate2D(latitude: lat, longitude: long)
-            
-            
             let annotation = MKPointAnnotation()
             annotation.coordinate = coordinate
             annotations.append(annotation)
         }
-        
         mapView.addAnnotations(annotations)
     }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        //mapView.removeAnnotations(<#[MKAnnotation]#>)
+        mapView.removeAnnotations(mapView.annotations)
         dataController.load()
-        setupFetchedResultsController()
+        fetchPins()
         // Generate long-press UIGestureRecognizer.
         let longPress: UILongPressGestureRecognizer = UILongPressGestureRecognizer()
         longPress.addTarget(self, action: #selector(recognizeLongPress(_:)))
         mapView.addGestureRecognizer(longPress)
-        // Read saved coordinate region from NSUserDefaults
+        
+        // Read saved coordinate region from UserDefaults
         if let array = self.readSavedMapPosition() {
             print("Loading saved region")
             let mkcr = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: array[0], longitude: array[1]), span: MKCoordinateSpan(latitudeDelta: array[2], longitudeDelta: array[3]))
@@ -77,14 +68,12 @@ class TravelLocationMapView: UIViewController, MKMapViewDelegate, NSFetchedResul
         self.navigationController?.setNavigationBarHidden(false, animated: animated);
         
         saveMapPosition(region: mapView.region)
-        fetchedResultsController=nil
         super.viewWillDisappear(animated)
         
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        setupFetchedResultsController()
         self.navigationController?.setNavigationBarHidden(true, animated: animated)
     }
     
@@ -95,7 +84,7 @@ class TravelLocationMapView: UIViewController, MKMapViewDelegate, NSFetchedResul
             return
         }
         
-        // Get the coordinates of the point you pressed long.
+        // Get the coordinates
         let location = sender.location(in: mapView)
         
         // Convert location to CLLocationCoordinate2D.
@@ -109,7 +98,7 @@ class TravelLocationMapView: UIViewController, MKMapViewDelegate, NSFetchedResul
         
         // Added pins to MapView.
         mapView.addAnnotation(myPin)
-        //saving the dropped pin
+        // Saving the dropped pin
         selectedPin = Pin(context: dataController.viewContext)
         selectedPin!.latitude=myPin.coordinate.latitude
         selectedPin!.longitude=myPin.coordinate.longitude
@@ -142,8 +131,6 @@ class TravelLocationMapView: UIViewController, MKMapViewDelegate, NSFetchedResul
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == segueIdentifier {
             let photoAlbumVC = segue.destination as! PhotoAlbumViewController
-            //photoAlbumVC.selectedCoordinateLat=selectedLat
-            //photoAlbumVC.selectedCoordinateLong=selectedLong
             photoAlbumVC.currentPin=selectedPin
             photoAlbumVC.dataController=dataController
         }
@@ -159,6 +146,7 @@ class TravelLocationMapView: UIViewController, MKMapViewDelegate, NSFetchedResul
         return array
     }
     
+    ///get a Pin reference from coredata of the selected pin
     func getPinReference(location: CLLocationCoordinate2D) -> Pin?
     {
         let fetchRequest: NSFetchRequest<Pin> = Pin.fetchRequest()
